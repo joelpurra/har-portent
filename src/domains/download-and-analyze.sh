@@ -76,10 +76,15 @@ for infilearg in "$@"; do
 	# Download once, then retry failed downloads twice
 	for (( downloadIteration=1; downloadIteration<=3; downloadIteration++ ))
 	do
+		# Increase parallelism as failures are more and more certain to be definite.
+		# Multiplies by 1, 3, 5
+		parallelDomainsThisIteration="$(( $parallelDomains * ((($downloadIteration - 1) * 2) + 1) ))"
+
 		cd "hars"
 		timestamp "start #$downloadIteration"
 		size=$(wc -l "../input.txt" | awk '{ print $1 }')
-		pv --line-mode --size "$size" -cN "in #$downloadIteration" "../input.txt" | "$heedlessBaseDir/domain/parallel.sh" "$prefix" "$parallelDomains" --screenshot true | pv --line-mode --size "$size" -cN "out #$downloadIteration" >> "$logname"
+		echo "Downloading $size domains, up to $parallelDomainsThisIteration at a time"
+		pv --line-mode --size "$size" -cN "in #$downloadIteration" "../input.txt" | "$heedlessBaseDir/domain/parallel.sh" "$prefix" "$parallelDomainsThisIteration" --screenshot true | pv --line-mode --size "$size" -cN "out #$downloadIteration" >> "$logname"
 		timestamp "stop #$downloadIteration"
 		cd ".."
 
