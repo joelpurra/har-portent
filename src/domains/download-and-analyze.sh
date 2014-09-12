@@ -14,13 +14,19 @@ logname="domains.log"
 datestamp=$(date -u +%F)
 curbasedir="$PWD"
 curdir=$(basename "$curbasedir")
-projectRoot="$(cd -- "${BASH_SOURCE%/*}"; cd -- "$(git rev-parse --git-dir)/../"; echo "$PWD")"
 
-# TODO: use http://gitslave.sourceforge.net/ instead?
-thesisBaseDir="$projectRoot/../"
-thesisBaseDir=$(cd -- "$thesisBaseDir"; echo "$PWD")
-heedlessBaseDir="$thesisBaseDir/har-heedless/src"
-dulcifyBaseDir="$thesisBaseDir/har-dulcify/src"
+setThesisBaseDirs(){
+	# TODO: share this function between scripts.
+	local projectRoot="$(cd -- "${BASH_SOURCE%/*}"; cd -- "$(git rev-parse --git-dir)/../"; echo "$PWD")"
+
+	# TODO: use http://gitslave.sourceforge.net/ instead?
+	local thesisBaseDir="$projectRoot/../"
+	local thesisBaseDirAbsolute=$(cd -- "$thesisBaseDir"; echo "$PWD")
+	heedlessBaseDir="$thesisBaseDirAbsolute/har-heedless/src"
+	dulcifyBaseDir="$thesisBaseDirAbsolute/har-dulcify/src"
+}
+
+setThesisBaseDirs
 
 getFileTimestamp() {
 	echo $(date -u +%FT%TZ | tr -d ':')
