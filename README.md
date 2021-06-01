@@ -3,6 +3,13 @@
 Using [har-heedless](https://github.com/joelpurra/har-heedless/) to download and [har-dulcify](https://github.com/joelpurra/har-dulcify/) to analyze web pages in aggregate.
 
 
+
+> ## ⚠️ This project has been archived
+>
+> No future updates are planned. Feel free to continue using it, but expect no support.
+
+
+
 - [Downloads the front web page of all domains](https://github.com/joelpurra/har-heedless/) in a dataset.
   - Input is a text file with one domain name per line.
   - Downloads `n` domains in parallel.
